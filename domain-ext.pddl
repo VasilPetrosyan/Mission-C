@@ -56,8 +56,8 @@
         (movedawyfromlander ?r) ;a predicate used for moving away from the lander 
         
         ;two predicted for determining which robot took part at scaning or capturing at a given waypoint
-        (scanedbyRobot ?l-waypoint ?r - robot)  
-        (capturedbyRobot  ?l-waypoint ?r - robot)
+        (scanedbyRobot ?x - waypoint ?r - robot)  
+        (capturedbyRobot  ?x - waypoint ?r - robot)
 
         (atDockingbay ?p - people ?r - robot)
         (atControlroom ?p - people ?r - robot)
@@ -168,13 +168,14 @@
         :precondition (and
           
             (undeployedLnader ?l) ;the lander of the robot is undeployed thus we need to depoly it 
+            (landerAssociatedRobot  ?r ?l)
             (atDockingbay ?p ?r)
             
         )
         :effect (and
             (deployedrob ?r);robot is deployed 
             (posrobot ?x ?r)
-            (landerAssociatedRobot ?l ?r);association is defined between robot and lander
+            ;(landerAssociatedRobot ?l ?r);association is defined between robot and lander
             (posland ?x ?l) ;postion of the lander is defined 
             (not (undeployedLnader ?l)) ; the lander is no longer undeployed 
             (atLandingsite ?r) ; the robot is at the landing site 

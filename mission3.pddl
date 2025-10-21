@@ -2,6 +2,7 @@
     (:domain lunar-extended)
 
      (:objects
+        
         wp1 - waypoint
         wp2 - waypoint
         wp3 - waypoint
@@ -17,6 +18,7 @@
     )
 
     (:init
+        
         (connectedpos wp1 wp2)
         (connectedpos wp2 wp1)
         (connectedpos wp2 wp4)
@@ -63,6 +65,7 @@
 
     (:goal
         (and
+           
             ; we must deploy r2
             (deployedrob r2)
             
