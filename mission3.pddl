@@ -32,57 +32,59 @@
 
         (storageEpmty r1)
         (storageEpmty r2)
-        
-        (landerRobot  r1 l1)
-        (landerRobot  r2 l2)
 
-        (pos wp2 r1)
+        (landerAssociatedRobot  r1 l1)
+        (landerAssociatedRobot  r2 l2)
+
+        ;the robot 2 and its lander 2 are undeployed at the start     
+        (undeployedLnader l2)
+        
+        
+      
+        ;the robot 1 and its lander are deployed at WP2
+        (deployedrob r1)
+        (atLandingsite r1)
+
+        (posrobot wp2 r1)
         (posland wp2 l1)
-
-        (not (deployed r2))
-        
-        (undeployed l2)
         
         (atDockingbay Alice r1)
 
         
 
         (atControlroom Bob r2)
-        ;(atDockingbay Bob r2)
+      
+
+       
 
         
-        ;lan
-
-        ;(not (deployed r2))
-
-        (deployed r1)
-        (not(undeployed l1))
-
-        (atLandingsite r1)
         
     )
 
     (:goal
         (and
-            (deployed r2)
-            (dataCapture  wp3)
-            (scan wp4)
+            ; we must deploy r2
+            (deployedrob r2)
             
-            (dataCapture wp2)
+           
+            ;mission aims 
+            (pictureCaptured  wp3)
+            (scaned wp4)
+            
+            (pictureCaptured wp2)
 
-            (scan wp6)
-
+            (scaned wp6)
+         
             (collectSample wp5)
-            
+           
+           
             (collectSample wp1)
-
             (physicalStorage r1)
             (physicalStorage r2)
 
-            (posland wp2 l1)
+            ; at the end of the mission the robots must have empty storge and be at the landning site 
 
             (atLandingsite r1)
-
             (atLandingsite r2)
 
             (storageEpmty r1)
