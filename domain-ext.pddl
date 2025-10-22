@@ -16,7 +16,7 @@
         robot
         lander
         waypoint
-        people
+        astronaut
     )
 
     ; -------------------------------
@@ -59,29 +59,14 @@
         (scanedbyRobot ?x - waypoint ?r - robot)  
         (capturedbyRobot  ?x - waypoint ?r - robot)
 
-        (atDockingbay ?p - people ?r - robot)
-        (atControlroom ?p - people ?r - robot)
+        ;predicates for the position of the astrounout in the landing site 
+        (atDockingbay ?p - astronaut ?r - robot)
+        (atControlroom ?p - astronaut ?r - robot)
        
     )
 
-    ; -------------------------------
-    ; Actions
-    ; -------------------------------
-
-    ; EXAMPLE
-
-    ; (:action action-template
-    ;     :parameters (?p - parameter_type)
-    ;     :precondition (and
-    ;         (one_arity_predicate ?p)
-    ;     )
-    ;     :effect 
-    ;     (and 
-    ;         (no_arity_predicate)
-    ;         (not (one_arity_predicate ?p))
-    ;     )
-    ; )
-
+   ;an action used to move the robot away from landing site 
+   ;?x represents where the robot is currently at ?y is where the robot wants to go
    (:action moveFromLandingSite
         :parameters (?x - waypoint  ?y - waypoint ?r - robot )
         :precondition (and
@@ -112,7 +97,7 @@
           
         )
         :effect (and
-            (not (posrobot ?x ?r))
+            (not (posrobot ?x ?r)); robot is no longer at the previous position 
             (posrobot ?y ?r) 
            
         )
@@ -130,41 +115,44 @@
             
         )
         :effect (and
-            (not (posrobot ?x ?r))
+            (not (posrobot ?x ?r)); robot is no longer at the previous position 
             (posrobot ?y ?r)
             (atLandingsite ?r); the robot is in the landing site 
-            (not (movedawyfromlander ?r))
+            (not (movedawyfromlander ?r)); robot has not moved away from landing site 
         )
     )
-
+;an action used to move the astrounout ?p at landing site associated to robot ?r to control room of the lander from docking bay 
+;to control room 
      (:action movepersontoControl
-        :parameters (?p - people  ?r - robot )
+        :parameters (?p - astronaut  ?r - robot )
         :precondition (and
-            (atDockingbay ?p ?r)
+            (atDockingbay ?p ?r) ; the astrounout is at the docking bay  
             
         )
         :effect (and
             (atControlroom ?p ?r)
-            (not (atDockingbay ?p ?r))
+            (not (atDockingbay ?p ?r)) ;astrounout is no longer at the docking bay 
            
         )
     )
+    ;an action used to move the astronount ?p at landing site associated to robot ?r  to docking bay from contraol room
+    ;to Docking bay
     (:action movepersontoDocking
-        :parameters (?p - people  ?r - robot )
+        :parameters (?p - astronaut  ?r - robot )
         :precondition (and
-            (atControlroom ?p ?r)
+            (atControlroom ?p ?r); the astrounout is at the control room
             
         )
         :effect (and
             (atDockingbay ?p ?r)
-            (not (atControlroom ?p ?r))
+            (not (atControlroom ?p ?r));astrounout is no longer at the control room  
            
         )
     )
 
    ;action used to deploy the robot and lander at a waypoint x from a lander 
     (:action deploy
-        :parameters (?x - waypoint  ?r - robot ?l - lander ?p - people)
+        :parameters (?x - waypoint  ?r - robot ?l - lander ?p - astronaut)
         :precondition (and
           
             (undeployedLnader ?l) ;the lander of the robot is undeployed thus we need to depoly it 
@@ -175,7 +163,6 @@
         :effect (and
             (deployedrob ?r);robot is deployed 
             (posrobot ?x ?r)
-            ;(landerAssociatedRobot ?l ?r);association is defined between robot and lander
             (posland ?x ?l) ;postion of the lander is defined 
             (not (undeployedLnader ?l)) ; the lander is no longer undeployed 
             (atLandingsite ?r) ; the robot is at the landing site 
@@ -218,15 +205,15 @@
         )
     )
 
-   ;action used to transmit  images by the robot at waypoint w
+   ;action used to transmit  images by the robot ?r  at waypoint ?w with the help of astrounout ?a
     (:action transmitImage
-        :parameters (?r - robot  ?w - waypoint ?p - people)
+        :parameters (?r - robot  ?w - waypoint ?p - astronaut)
         :precondition (and
            ; the robot is deployed and at position of the image capured 
            (posrobot ?w ?r) 
            (capturedbyRobot  ?w ?r)
            (deployedrob ?r)
-           (atControlroom ?p ?r)
+           (atControlroom ?p ?r);astronut is at he control room 
         )
         :effect (and
             ;data is transmited and storgage is empty
@@ -237,13 +224,13 @@
     )
     ;action used to transmit scans  by the robot at waypoint w
      (:action transmitScan
-        :parameters (?r - robot  ?w - waypoint ?p - people)
+        :parameters (?r - robot  ?w - waypoint ?p - astronaut)
         :precondition (and
         ;the robot is deployed and at position of the scan 
            (posrobot ?w ?r)
            (deployedrob ?r)
            (scanedbyRobot  ?w ?r)
-           (atControlroom ?p ?r)
+           (atControlroom ?p ?r);astronut is at the control room 
         )
         :effect (and
            ;data is transmited and storgage is empty
@@ -252,7 +239,8 @@
            
         )
     )
-
+    ;a action used for collection of sample by robot ?r at waypoint ?x
+    ;works simmilar to scan and capture image however sample collection uses up physical storage instead
     (:action sampleCollecton
         :parameters (?x - waypoint  ?r - robot )
         :precondition (and
@@ -272,7 +260,7 @@
 
     ; an action used to drop off sample at waypoint x by robot r that is associated to lander la
       (:action dropoffsample
-        :parameters (?x - waypoint  ?r - robot ?la - lander ?p - people)
+        :parameters (?x - waypoint  ?r - robot ?la - lander ?p - astronaut)
         :precondition (and
 
            ;must be depoloyed and at the landing site 
