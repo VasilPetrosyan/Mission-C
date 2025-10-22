@@ -1,17 +1,7 @@
 (define (domain lunar-extended)
    (:requirements :strips :typing)
     
-    ; -------------------------------
-    ; Types
-    ; -------------------------------
-
-    ; EXAMPLE
-
-    ; (:types
-    ;     parent_type
-    ;     child_type - parent_type
-
-    ; )
+   
     (:types
         robot
         lander
@@ -19,47 +9,39 @@
         astronaut
     )
 
-    ; -------------------------------
-    ; Predicates
-    ; -------------------------------
-
-    ; EXAMPLE
-
-    ; (:predicates
-    ;     (no_arity_predicate)
-    ;     (one_arity_predicate ?p - parameter_type)
-    ; )
+   
 
     (:predicates
-        (posrobot ?x - waypoint ?r - robot) ;predicte for position of the robot
-        (posland ?x - waypoint ?la - lander) ;predicte for position of the lander
+        (posrobot ?x - waypoint ?r - robot) ;predicate for position of the robot
+        (posland ?x - waypoint ?la - lander) ;predicate for position of the lander
 
-        (undeployedLnader ?l - lander); predicte to see if the lander is undeployed 
+
+        (undeployedLanader ?l - lander); predicate to see if the lander is undeployed 
 
         
-        (connectedpos ?x - waypoint ?y - waypoint); predicte to see if the positions x -> y
+        (connectedpos ?x - waypoint ?y - waypoint); predicate to see if the positions x -> y
 
-        (dataTransmited  ?r - robot) ; a predicte to see if the data has been transmitted by robot
-        (pictureCaptured  ?l-waypoint) ;predicte to  for  pictures captured at waypoint l
-        (scaned ?l-waypoint)  ; predicte for data scned at a waypoint 
-        (collectSample ?x - waypoint) ;predicte for checking if sample collected at waypiont 
-        (landerAssociatedRobot  ?r - robot ?l - lander) ; predicte for association between lander robot
+        (dataTransmited  ?r - robot) ; a predicate to see if the data has been transmitted by robot
+        (pictureCaptured  ?l-waypoint) ;predicate for  pictures captured at waypoint 
+        (scaned ?l-waypoint)  ; predicate for data scned at a waypoint 
+        (collectSample ?x - waypoint) ;predicate for checking if sample collected at waypiont 
+        (landerAssociatedRobot  ?r - robot ?l - lander) ; predicate for association between lander and robot
 
-        (deployedrob ?r - robot); predicte to see if the robot is depolyed 
+        (deployedrob ?r - robot); predicate to see if the robot is depolyed 
 
-        (storageEpmty ?r - robot);predicte to check storage empty for robot
-        (physicalStorage ?r - robot);predicte to check physical storage is empty for robot
+        (storageEpmty ?r - robot);predicate to check storage empty for robot
+        (physicalStorage ?r - robot);predicate to check physical storage is empty for robot
         
 
-        (atLandingsite ?r) ;predicte to check if the robot is at the landing site 
+        (atLandingsite ?r) ;predicate to check if the robot is at the landing site 
 
         (movedawyfromlander ?r) ;a predicate used for moving away from the lander 
         
-        ;two predicted for determining which robot took part at scaning or capturing at a given waypoint
+        ;two predicates for determining which robot took part at scaning or capturing at a given waypoint
         (scanedbyRobot ?x - waypoint ?r - robot)  
         (capturedbyRobot  ?x - waypoint ?r - robot)
 
-        ;predicates for the position of the astrounout in the landing site 
+        ;predicates for the position of the astronaut in the landing site 
         (atDockingbay ?p - astronaut ?r - robot)
         (atControlroom ?p - astronaut ?r - robot)
        
@@ -121,17 +103,17 @@
             (not (movedawyfromlander ?r)); robot has not moved away from landing site 
         )
     )
-;an action used to move the astrounout ?p at landing site associated to robot ?r to control room of the lander from docking bay 
+;an action used to move the astronaut ?p at landing site associated to robot ?r to control room of the lander from docking bay 
 ;to control room 
      (:action movepersontoControl
         :parameters (?p - astronaut  ?r - robot )
         :precondition (and
-            (atDockingbay ?p ?r) ; the astrounout is at the docking bay  
+            (atDockingbay ?p ?r) ; the astronaut is at the docking bay  
             
         )
         :effect (and
             (atControlroom ?p ?r)
-            (not (atDockingbay ?p ?r)) ;astrounout is no longer at the docking bay 
+            (not (atDockingbay ?p ?r)) ;astronaut is no longer at the docking bay 
            
         )
     )
@@ -140,12 +122,12 @@
     (:action movepersontoDocking
         :parameters (?p - astronaut  ?r - robot )
         :precondition (and
-            (atControlroom ?p ?r); the astrounout is at the control room
+            (atControlroom ?p ?r); the astronaut is at the control room
             
         )
         :effect (and
             (atDockingbay ?p ?r)
-            (not (atControlroom ?p ?r));astrounout is no longer at the control room  
+            (not (atControlroom ?p ?r));astronaut is no longer at the control room  
            
         )
     )
@@ -155,7 +137,7 @@
         :parameters (?x - waypoint  ?r - robot ?l - lander ?p - astronaut)
         :precondition (and
           
-            (undeployedLnader ?l) ;the lander of the robot is undeployed thus we need to depoly it 
+            (undeployedLanader ?l) ;the lander of the robot is undeployed thus we need to depoly it 
             (landerAssociatedRobot  ?r ?l)
             (atDockingbay ?p ?r)
             
@@ -164,7 +146,7 @@
             (deployedrob ?r);robot is deployed 
             (posrobot ?x ?r)
             (posland ?x ?l) ;postion of the lander is defined 
-            (not (undeployedLnader ?l)) ; the lander is no longer undeployed 
+            (not (undeployedLanader ?l)) ; the lander is no longer undeployed 
             (atLandingsite ?r) ; the robot is at the landing site 
             
         )
@@ -205,7 +187,7 @@
         )
     )
 
-   ;action used to transmit  images by the robot ?r  at waypoint ?w with the help of astrounout ?a
+   ;action used to transmit  images by the robot ?r  at waypoint ?w with the help of astronaut ?a
     (:action transmitImage
         :parameters (?r - robot  ?w - waypoint ?p - astronaut)
         :precondition (and
@@ -222,7 +204,7 @@
          
         )
     )
-    ;action used to transmit scans  by the robot at waypoint w
+    ;action used to transmit scans  by the robot at waypoint ?w
      (:action transmitScan
         :parameters (?r - robot  ?w - waypoint ?p - astronaut)
         :precondition (and
@@ -230,7 +212,7 @@
            (posrobot ?w ?r)
            (deployedrob ?r)
            (scanedbyRobot  ?w ?r)
-           (atControlroom ?p ?r);astronut is at the control room 
+           (atControlroom ?p ?r);astronaut is at the control room 
         )
         :effect (and
            ;data is transmited and storgage is empty
@@ -267,7 +249,7 @@
             (deployedrob ?r) 
             (atLandingsite ?r)
             (posrobot ?x ?r)
-            (atDockingbay ?p ?r)
+            (atDockingbay ?p ?r) ;astronaut must be at docking bay
             
         )
         :effect (and

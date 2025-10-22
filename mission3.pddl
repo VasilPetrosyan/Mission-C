@@ -9,7 +9,7 @@
         wp4 - waypoint
         wp5 - waypoint
         wp6 - waypoint
-        
+
         r1 - robot
         r2 - robot
         l1 - lander
@@ -41,7 +41,7 @@
         (landerAssociatedRobot  r2 l2)
 
         ;the robot 2 and its lander 2 are undeployed at the start     
-        (undeployedLnader l2)
+        (undeployedLanader l2)
         
         
       
