@@ -27,7 +27,7 @@
         (collectSample ?x - waypoint) ;predicate for checking if sample collected at waypiont 
         (landerAssociatedRobot  ?r - robot ?l - lander) ; predicate for association between lander and robot
 
-        (deployedrob ?r - robot); predicate to see if the robot is depolyed 
+        (deployedrob ?r - robot); predicate to see if the robot is deployed 
 
         (storageEpmty ?r - robot);predicate to check storage empty for robot
         (physicalStorage ?r - robot);predicate to check physical storage is empty for robot
@@ -164,7 +164,7 @@
         :effect (and
             (not (dataTransmited  ?r)); data has not been transmitted when we capture the image 
             (pictureCaptured ?x)
-            (not(storageEpmty ?r)) ;the storgae is no loger empty 
+            (not(storageEpmty ?r)) ;the storage is no longer empty 
             (capturedbyRobot  ?x ?r) 
         )
     )
@@ -245,7 +245,7 @@
         :parameters (?x - waypoint  ?r - robot ?la - lander ?p - astronaut)
         :precondition (and
 
-           ;must be depoloyed and at the landing site 
+           ;must be deployed and at the landing site 
             (deployedrob ?r) 
             (atLandingsite ?r)
             (posrobot ?x ?r)
@@ -253,7 +253,7 @@
             
         )
         :effect (and
-            (physicalStorage ?r);pysical storage is now empty 
+            (physicalStorage ?r);physical storage is now empty 
            
             
             
